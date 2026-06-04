@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Little Steps Video Helper</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="control-panel" aria-label="Create a calming child video">
+        <div class="brand-row">
+          <div class="mark" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <p class="eyebrow">Tantrum support tool</p>
+            <h1>Little Steps Video Helper</h1>
+          </div>
+        </div>
+
+        <div class="tab-list" role="tablist" aria-label="App sections">
+          <button
+            id="tab-button-problem"
+            class="tab-button active"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="tab-problem"
+            data-tab-target="problem"
+          >Problem</button>
+          <button
+            id="tab-button-character"
+            class="tab-button"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="tab-character"
+            data-tab-target="character"
+          >Character</button>
+          <button
+            id="tab-button-video"
+            class="tab-button"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="tab-video"
+            data-tab-target="video"
+          >Video</button>
+          <button
+            id="tab-button-tips"
+            class="tab-button"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="tab-tips"
+            data-tab-target="tips"
+          >Parent tips</button>
+        </div>
+
+        <form id="video-form" class="generator-form">
+          <div class="tab-panels">
+            <section
+              id="tab-problem"
+              class="tab-panel active"
+              role="tabpanel"
+              aria-labelledby="tab-button-problem"
+              data-tab-panel="problem"
+            >
+              <label for="issue">What is the child resisting?</label>
+              <textarea
+                id="issue"
+                name="issue"
+                rows="4"
+                maxlength="220"
+                placeholder="Example: My child does not want to brush their teeth."
+              >My child does not want to brush their teeth.</textarea>
+
+              <div class="form-grid">
+                <label>
+                  Child age
+                  <select id="age" name="age">
+                    <option value="2">2 years</option>
+                    <option value="3" selected>3 years</option>
+                    <option value="4">4 years</option>
+                    <option value="5">5 years</option>
+                    <option value="6">6 years</option>
+                    <option value="7">7 years</option>
+                    <option value="8">8 years</option>
+                  </select>
+                </label>
+
+                <label>
+                  Video pace
+                  <select id="pace" name="pace">
+                    <option value="slow" selected>Slow</option>
+                    <option value="very-slow">Very slow</option>
+                    <option value="steady">Steady</option>
+                  </select>
+                </label>
+
+                <label>
+                  Length
+                  <select id="length" name="length">
+                    <option value="45">45 seconds</option>
+                    <option value="75" selected>75 seconds</option>
+                    <option value="120">2 minutes</option>
+                  </select>
+                </label>
+
+                <label>
+                  Language
+                  <select id="language" name="language">
+                    <option value="en" selected>English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                  </select>
+                </label>
+              </div>
+
+              <fieldset class="composer-panel" aria-label="AI video composer">
+                <legend>AI video composer</legend>
+                <label>
+                  Task focus
+                  <select id="task-detail" name="task-detail"></select>
+                </label>
+                <label>
+                  Why it feels hard
+                  <select id="child-need" name="child-need">
+                    <option value="control" selected>Needs control</option>
+                    <option value="sensory">Feels sensory</option>
+                    <option value="transition">Needs more time</option>
+                    <option value="fear">Feels unsure</option>
+                    <option value="tired">Low energy</option>
+                  </select>
+                </label>
+                <label>
+                  Helper style
+                  <select id="helper-style" name="helper-style">
+                    <option value="choice" selected>Two choices</option>
+                    <option value="tiny-step">First tiny step</option>
+                    <option value="pretend">Pretend play</option>
+                  </select>
+                </label>
+              </fieldset>
+            </section>
+
+            <section
+              id="tab-character"
+              class="tab-panel"
+              role="tabpanel"
+              aria-labelledby="tab-button-character"
+              data-tab-panel="character"
+              hidden
+            >
+              <fieldset class="composer-panel" aria-label="Child character options">
+                <legend>Child character</legend>
+                <label>
+                  Child name
+                  <input
+                    id="child-name"
+                    name="child-name"
+                    type="text"
+                    maxlength="24"
+                    placeholder="Example: Mia"
+                  />
+                </label>
+                <label>
+                  Character
+                  <select id="character-style" name="character-style">
+                    <option value="neutral" selected>Neutral child</option>
+                    <option value="girl">Girl</option>
+                    <option value="boy">Boy</option>
+                    <option value="superhero">Superhero</option>
+                  </select>
+                </label>
+                <label>
+                  Skin tone
+                  <select id="skin-tone" name="skin-tone">
+                    <option value="light" selected>Light</option>
+                    <option value="tan">Warm tan</option>
+                    <option value="brown">Brown</option>
+                    <option value="dark">Dark brown</option>
+                  </select>
+                </label>
+                <label>
+                  Body shape
+                  <select id="body-shape" name="body-shape">
+                    <option value="small">Small</option>
+                    <option value="average" selected>Average</option>
+                    <option value="round">Round</option>
+                  </select>
+                </label>
+                <label class="checkbox-line">
+                  <input id="has-glasses" name="has-glasses" type="checkbox" />
+                  Glasses
+                </label>
+                <div class="background-picker">
+                  <label>
+                    Favorite background photo
+                    <input
+                      id="background-image"
+                      name="background-image"
+                      type="file"
+                      accept="image/*"
+                    />
+                  </label>
+                  <div class="background-preview empty" id="background-preview" aria-live="polite">
+                    <span id="background-preview-label">No background selected</span>
+                  </div>
+                  <button id="remove-background" class="secondary-action" type="button" disabled>
+                    Remove photo
+                  </button>
+                  <p class="privacy-note" id="background-privacy-note">
+                    The photo stays on this device and is only used as a local background.
+                  </p>
+                </div>
+              </fieldset>
+            </section>
+
+            <section
+              id="tab-video"
+              class="tab-panel"
+              role="tabpanel"
+              aria-labelledby="tab-button-video"
+              data-tab-panel="video"
+              hidden
+            >
+              <fieldset class="sketch-panel" aria-label="Mini video sketch">
+                <legend>Mini sketch</legend>
+                <label>
+                  Opening
+                  <select id="sketch-start" name="sketch-start">
+                    <option value="arms-crossed" selected>Refuses first</option>
+                    <option value="backs-away">Backs away</option>
+                    <option value="covers-ears">Overwhelmed</option>
+                  </select>
+                </label>
+                <label>
+                  Middle
+                  <select id="sketch-step" name="sketch-step">
+                    <option value="look-touch" selected>Look, then touch</option>
+                    <option value="one-count">Try one count</option>
+                    <option value="parent-help">Parent helps hand</option>
+                  </select>
+                </label>
+                <label>
+                  Ending
+                  <select id="sketch-ending" name="sketch-ending">
+                    <option value="proud" selected>Feels proud</option>
+                    <option value="calm">Feels calm</option>
+                    <option value="celebrate">Tiny celebration</option>
+                  </select>
+                </label>
+                <div class="sketch-preview" id="sketch-preview" aria-live="polite"></div>
+              </fieldset>
+
+              <fieldset class="tone-group" aria-label="Video tone">
+                <legend>Tone</legend>
+                <label>
+                  <input type="radio" name="tone" value="gentle" checked />
+                  Gentle
+                </label>
+                <label>
+                  <input type="radio" name="tone" value="playful" />
+                  Playful
+                </label>
+                <label>
+                  <input type="radio" name="tone" value="sensory" />
+                  Sensory-aware
+                </label>
+              </fieldset>
+
+              <button class="primary-action" type="submit">
+                <span class="button-icon play-icon" aria-hidden="true"></span>
+                Create calm video
+              </button>
+            </section>
+
+            <section
+              id="tab-tips"
+              class="tab-panel"
+              role="tabpanel"
+              aria-labelledby="tab-button-tips"
+              data-tab-panel="tips"
+              hidden
+            >
+              <div class="parent-notes" aria-label="Parent guidance">
+                <h2 id="parent-guide-title">Parent guide</h2>
+                <p class="panel-label" id="core-tips-label">Calm first steps</p>
+                <ul class="tip-list" id="core-tips-list">
+                  <li data-parent-tip="softVoice">Use a soft voice and stay near the child.</li>
+                  <li data-parent-tip="choices">Offer two simple choices when the child is ready.</li>
+                  <li data-parent-tip="tinyStep">Praise the first tiny step toward the task.</li>
+                </ul>
+
+                <div class="advice-card">
+                  <p class="panel-label" id="specific-tips-label">For this situation</p>
+                  <h3 id="specific-tips-title">Brushing teeth plan</h3>
+                  <ul class="tip-list" id="specific-tips-list"></ul>
+                </div>
+
+                <div class="advice-card">
+                  <p class="panel-label" id="tantrum-tips-label">During the tantrum</p>
+                  <ul class="tip-list" id="tantrum-tips-list"></ul>
+                </div>
+
+                <div class="source-panel">
+                  <p class="panel-label" id="sources-label">Sources used</p>
+                  <div class="source-list" id="source-list"></div>
+                </div>
+
+                <p class="privacy-note" id="privacy-note">
+                  The child name can be a nickname. This prototype does not store it.
+                </p>
+              </div>
+            </section>
+          </div>
+        </form>
+      </section>
+
+      <section class="video-workspace" aria-label="Generated cartoon video">
+        <div class="player-topbar">
+          <div>
+            <p class="eyebrow">Generated sequence</p>
+            <h2 id="video-title">Brushing keeps teeth strong</h2>
+          </div>
+          <div class="status-pill" id="pace-pill">Slow words</div>
+        </div>
+
+        <div class="cartoon-stage" id="cartoon-stage">
+          <div class="sky-band" aria-hidden="true">
+            <span class="cloud cloud-one"></span>
+            <span class="cloud cloud-two"></span>
+            <span class="sun"></span>
+          </div>
+          <div class="stage-floor" aria-hidden="true"></div>
+          <span class="task-effect effect-one" aria-hidden="true"></span>
+          <span class="task-effect effect-two" aria-hidden="true"></span>
+          <div class="prop-zone" id="prop-zone" aria-hidden="true"></div>
+          <div class="character" aria-hidden="true">
+            <span class="emotion-mark"></span>
+            <span class="head">
+              <span class="brow brow-left"></span>
+              <span class="brow brow-right"></span>
+              <span class="eye eye-left"></span>
+              <span class="eye eye-right"></span>
+              <span class="nose"></span>
+              <span class="mouth"></span>
+            </span>
+            <span class="body"></span>
+            <span class="arm arm-left"></span>
+            <span class="arm arm-right"></span>
+            <span class="held-item"></span>
+            <span class="leg leg-left"></span>
+            <span class="leg leg-right"></span>
+          </div>
+          <div class="scene-label" id="scene-label">Scene 1 of 5</div>
+        </div>
+
+        <div class="caption-panel" aria-live="polite">
+          <p id="caption" class="caption-text"></p>
+        </div>
+
+        <div class="progress-wrap" aria-label="Video progress">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div class="player-controls">
+          <button id="prev-scene" class="icon-button" type="button" aria-label="Previous scene">
+            <span class="chevron-left" aria-hidden="true"></span>
+          </button>
+          <button id="play-video" class="control-button" type="button">
+            <span class="button-icon play-icon" aria-hidden="true"></span>
+            Play
+          </button>
+          <button id="pause-video" class="control-button secondary" type="button">
+            <span class="button-icon pause-icon" aria-hidden="true"></span>
+            Pause
+          </button>
+          <button id="next-scene" class="icon-button" type="button" aria-label="Next scene">
+            <span class="chevron-right" aria-hidden="true"></span>
+          </button>
+          <label class="voice-toggle">
+            <input id="voice-toggle" type="checkbox" />
+            Soft voice
+          </label>
+        </div>
+
+        <div class="coaching-grid">
+          <article class="info-panel">
+            <p class="panel-label">Ask the child</p>
+            <h3 id="child-question">Can we make tiny circles on the teeth?</h3>
+            <div class="answer-row">
+              <button type="button" data-answer="yes">Yes</button>
+              <button type="button" data-answer="not-yet">Not yet</button>
+              <button type="button" data-answer="help">Help me</button>
+            </div>
+          </article>
+
+          <article class="info-panel">
+            <p class="panel-label">Parent line</p>
+            <h3 id="parent-cue">You can hold the brush, or I can help your hand.</h3>
+            <p id="parent-tip">Keep the direction short. Praise any small movement toward the toothbrush.</p>
+          </article>
+        </div>
+
+        <details class="script-output" open>
+          <summary>Generated video script</summary>
+          <pre id="script-text"></pre>
+          <button id="copy-script" class="copy-button" type="button">Copy script</button>
+        </details>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
