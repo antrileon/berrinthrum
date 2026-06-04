@@ -1276,16 +1276,25 @@ summary:focus-visible {
   display: none;
 }
 
+.cartoon-stage[data-topic="teeth"] .prop-zone {
+  right: 6%;
+  bottom: 25%;
+  width: clamp(150px, 21vw, 190px);
+  height: clamp(150px, 21vw, 190px);
+  min-width: 150px;
+  min-height: 150px;
+}
+
 .prop-tooth {
-  left: 38%;
-  top: 18%;
-  width: 75px;
-  height: 96px;
+  left: 50%;
+  top: 11%;
+  width: 62px;
+  height: 80px;
   border-radius: 44% 44% 28% 28%;
   background: #fff;
   box-shadow:
-    -20px 55px 0 -26px #fff,
-    20px 55px 0 -26px #fff,
+    -16px 45px 0 -22px #fff,
+    16px 45px 0 -22px #fff,
     0 8px 0 rgba(0, 0, 0, 0.05);
 }
 
@@ -1294,10 +1303,10 @@ summary:focus-visible {
 }
 
 .prop-brush {
-  left: 18%;
-  top: 58%;
-  width: 150px;
-  height: 15px;
+  left: 25%;
+  top: 64%;
+  width: 116px;
+  height: 12px;
   border-radius: 999px;
   background: var(--blue);
   transform: rotate(-18deg);
@@ -1306,13 +1315,13 @@ summary:focus-visible {
 .prop-brush::after {
   content: "";
   position: absolute;
-  left: -8px;
-  top: -10px;
-  width: 38px;
-  height: 35px;
+  left: -7px;
+  top: -8px;
+  width: 30px;
+  height: 28px;
   border-radius: 6px;
   background:
-    repeating-linear-gradient(90deg, #fff 0 5px, #c9e7ff 5px 10px);
+    repeating-linear-gradient(90deg, #fff 0 4px, #c9e7ff 4px 8px);
 }
 
 .cartoon-stage.is-playing .prop-brush {
@@ -3166,6 +3175,35 @@ summary:focus-visible {
     height: 205px;
     min-width: 0;
     min-height: 0;
+  }
+
+  .cartoon-stage[data-topic="teeth"] .prop-zone {
+    right: 4%;
+    bottom: 31%;
+    width: 112px;
+    height: 112px;
+    min-width: 112px;
+    min-height: 112px;
+  }
+
+  .cartoon-stage[data-topic="teeth"] .prop-tooth {
+    left: 49%;
+    top: 6%;
+    width: 48px;
+    height: 62px;
+  }
+
+  .cartoon-stage[data-topic="teeth"] .prop-brush {
+    left: 9%;
+    top: 70%;
+    width: 82px;
+    height: 9px;
+  }
+
+  .cartoon-stage[data-topic="teeth"] .prop-brush::after {
+    top: -7px;
+    width: 24px;
+    height: 23px;
   }
 
   .voice-toggle {
