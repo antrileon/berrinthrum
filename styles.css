@@ -604,6 +604,37 @@ summary:focus-visible {
   background: linear-gradient(#cfe7fb 0 62%, #dcebd9 62% 100%);
 }
 
+.prerendered-video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #111923;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.prerendered-video[hidden] {
+  display: none;
+}
+
+.cartoon-stage.has-prerendered-video .sky-band,
+.cartoon-stage.has-prerendered-video .stage-floor,
+.cartoon-stage.has-prerendered-video .task-effect,
+.cartoon-stage.has-prerendered-video .prop-zone,
+.cartoon-stage.has-prerendered-video .character {
+  display: none;
+}
+
+.cartoon-stage.has-prerendered-video::after {
+  display: none;
+}
+
+.cartoon-stage.has-prerendered-video .scene-label {
+  z-index: 2;
+}
+
 .cartoon-stage.has-custom-background {
   background:
     linear-gradient(rgba(207, 231, 251, 0.42), rgba(220, 235, 217, 0.56)),

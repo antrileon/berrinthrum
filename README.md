@@ -15,3 +15,13 @@ Then open:
 ```text
 http://localhost:4174/
 ```
+
+## Pre-rendered Pika Clips
+
+The app is ready to use pre-rendered Pika MP4 clips by task. Add exported clips to:
+
+```text
+assets/videos/pika/
+```
+
+Use the exact filenames listed in `assets/videos/pika/README.md`. Prompts and launch workflow are in `production/pika-prompts.md` and `production/pika-asset-checklist.md`.

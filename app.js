@@ -21,6 +21,7 @@ const voiceToggle = document.querySelector("#voice-toggle");
 const titleEl = document.querySelector("#video-title");
 const pacePill = document.querySelector("#pace-pill");
 const stageEl = document.querySelector("#cartoon-stage");
+const prerenderedVideoEl = document.querySelector("#prerendered-video");
 const propZone = document.querySelector("#prop-zone");
 const sceneLabel = document.querySelector("#scene-label");
 const captionEl = document.querySelector("#caption");
@@ -46,6 +47,41 @@ const removeBackgroundButton = document.querySelector("#remove-background");
 const answerButtons = [...document.querySelectorAll("[data-answer]")];
 const tabButtons = [...document.querySelectorAll("[data-tab-target]")];
 const tabPanels = [...document.querySelectorAll("[data-tab-panel]")];
+
+const preRenderedVideoLibrary = {
+  teeth: {
+    src: "./assets/videos/pika/teeth.mp4",
+    poster: "./assets/posters/pika/teeth.jpg",
+  },
+  bedtime: {
+    src: "./assets/videos/pika/bedtime.mp4",
+    poster: "./assets/posters/pika/bedtime.jpg",
+  },
+  bath: {
+    src: "./assets/videos/pika/bath.mp4",
+    poster: "./assets/posters/pika/bath.jpg",
+  },
+  clothes: {
+    src: "./assets/videos/pika/clothes.mp4",
+    poster: "./assets/posters/pika/clothes.jpg",
+  },
+  cleanup: {
+    src: "./assets/videos/pika/cleanup.mp4",
+    poster: "./assets/posters/pika/cleanup.jpg",
+  },
+  leaving: {
+    src: "./assets/videos/pika/leaving.mp4",
+    poster: "./assets/posters/pika/leaving.jpg",
+  },
+  car: {
+    src: "./assets/videos/pika/car.mp4",
+    poster: "./assets/posters/pika/car.jpg",
+  },
+  food: {
+    src: "./assets/videos/pika/food.mp4",
+    poster: "./assets/posters/pika/food.jpg",
+  },
+};
 
 const topicLibrary = [
   {
@@ -1794,6 +1830,38 @@ function renderCaption(text, activeWordIndex = -1) {
   );
 }
 
+async function syncPreRenderedVideo(video) {
+  const asset = preRenderedVideoLibrary[video.topic.id];
+
+  stageEl.classList.remove("has-prerendered-video");
+  prerenderedVideoEl.hidden = true;
+  prerenderedVideoEl.pause();
+  prerenderedVideoEl.removeAttribute("src");
+  prerenderedVideoEl.removeAttribute("poster");
+  prerenderedVideoEl.load();
+
+  if (!asset) {
+    return;
+  }
+
+  try {
+    const response = await fetch(asset.src, { method: "HEAD", cache: "no-store" });
+
+    if (!response.ok) {
+      return;
+    }
+
+    prerenderedVideoEl.src = asset.src;
+    prerenderedVideoEl.poster = asset.poster;
+    prerenderedVideoEl.hidden = false;
+    stageEl.classList.add("has-prerendered-video");
+    prerenderedVideoEl.load();
+  } catch {
+    stageEl.classList.remove("has-prerendered-video");
+    prerenderedVideoEl.hidden = true;
+  }
+}
+
 function renderScene(index) {
   if (!currentVideo) {
     return;
@@ -1862,11 +1930,13 @@ function generateVideoFromForm() {
   updateParentGuidance();
   stopPlayback();
   renderScene(0);
+  syncPreRenderedVideo(currentVideo);
 }
 
 function stopPlayback() {
   isPlaying = false;
   stageEl.classList.remove("is-playing");
+  prerenderedVideoEl.pause();
   window.clearTimeout(playTimer);
   window.clearInterval(wordTimer);
   playTimer = null;
@@ -1916,6 +1986,9 @@ function playScene() {
 
   isPlaying = true;
   stageEl.classList.add("is-playing");
+  if (!prerenderedVideoEl.hidden) {
+    prerenderedVideoEl.play().catch(() => {});
+  }
   const scene = currentVideo.scenes[currentSceneIndex];
   renderScene(currentSceneIndex);
   highlightWords(scene);
