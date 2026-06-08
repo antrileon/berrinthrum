@@ -37,12 +37,18 @@ const tantrumTipsList = document.querySelector("#tantrum-tips-list");
 const sourceList = document.querySelector("#source-list");
 const backgroundPreview = document.querySelector("#background-preview");
 const backgroundPreviewLabel = document.querySelector("#background-preview-label");
+const pikaFilenameEl = document.querySelector("#pika-filename");
+const pikaFolderEl = document.querySelector("#pika-folder");
+const pikaStatusEl = document.querySelector("#pika-status");
+const pikaPromptTextEl = document.querySelector("#pika-prompt-text");
+const pikaFileListEl = document.querySelector("#pika-file-list");
 
 const playButton = document.querySelector("#play-video");
 const pauseButton = document.querySelector("#pause-video");
 const prevButton = document.querySelector("#prev-scene");
 const nextButton = document.querySelector("#next-scene");
 const copyButton = document.querySelector("#copy-script");
+const copyPikaPromptButton = document.querySelector("#copy-pika-prompt");
 const removeBackgroundButton = document.querySelector("#remove-background");
 const answerButtons = [...document.querySelectorAll("[data-answer]")];
 const tabButtons = [...document.querySelectorAll("[data-tab-target]")];
@@ -80,6 +86,41 @@ const preRenderedVideoLibrary = {
   food: {
     src: "./assets/videos/pika/food.mp4",
     poster: "./assets/posters/pika/food.jpg",
+  },
+};
+
+const pikaTaskPromptLibrary = {
+  teeth: "A young child in a cozy bathroom refuses to brush teeth at first, arms crossed and gently frowning. A toothbrush and cup are nearby. The child takes one slow breath, reaches for the toothbrush, accepts help, and gently brushes front teeth with tiny circles.",
+  bedtime: "A young child resists bedtime in a cozy bedroom, arms crossed beside a bed. A soft blanket, pillow, and small night light are visible. The child slowly chooses the blanket, climbs into bed, and settles calmly.",
+  bath: "A young child in a bright bathroom refuses bath time at first, sitting near a bathtub with arms crossed. Warm water, bubbles, and a soft towel are visible. The child slowly touches the water with one hand, relaxes, then washes one arm with soap bubbles.",
+  clothes: "A young child refuses to get dressed at first, sitting near a shirt and socks. The child slowly looks at two clothing choices, touches one sock, and allows one foot to go in.",
+  cleanup: "A young child refuses to clean up toys at first, standing near blocks and soft toys. The child slowly chooses one toy, picks it up, and places it in a bin.",
+  leaving: "A young child resists leaving a play area at first, standing with crossed arms. A caregiver hand is nearby but not pulling. The child slowly waves goodbye, takes three small steps toward the caregiver, and looks calmer.",
+  car: "A young child resists sitting in a car seat at first, arms crossed beside an open car door. The child slowly climbs into the car seat, puts back against the seat, and accepts the buckle click.",
+  food: "A young child at a small table refuses dinner at first, turned slightly away from a plate. The plate has simple colorful food and a spoon. The child slowly looks, smells the food, touches the spoon, then takes one tiny bite and looks calmer.",
+};
+
+const pikaStatusCopy = {
+  en: {
+    ready: "Ready. Pika MP4 is active.",
+    missing: "Missing MP4. CSS fallback is active.",
+    checking: "Checking for MP4...",
+    copied: "Copied",
+    copy: "Copy Pika prompt",
+  },
+  es: {
+    ready: "Listo. El MP4 de Pika esta activo.",
+    missing: "Falta el MP4. El cartoon CSS sigue activo.",
+    checking: "Revisando si existe el MP4...",
+    copied: "Copiado",
+    copy: "Copiar prompt de Pika",
+  },
+  fr: {
+    ready: "Pret. Le MP4 Pika est actif.",
+    missing: "MP4 manquant. Le cartoon CSS reste actif.",
+    checking: "Verification du MP4...",
+    copied: "Copie",
+    copy: "Copier le prompt Pika",
   },
 };
 
@@ -1830,9 +1871,70 @@ function renderCaption(text, activeWordIndex = -1) {
   );
 }
 
+function getPikaStatusLabels(lang = getLanguage()) {
+  return pikaStatusCopy[lang] || pikaStatusCopy.en;
+}
+
+function getPikaFilename(topicId) {
+  const asset = preRenderedVideoLibrary[topicId] || preRenderedVideoLibrary.teeth;
+  return asset.src.replace("./", "");
+}
+
+function buildPikaPrompt(video) {
+  const character = video.composer.character;
+  const characterNotes = [
+    character.style === "superhero" ? "superhero outfit with a small cape" : "simple child outfit",
+    `${character.skin} skin tone`,
+    `${character.body} body shape`,
+    character.glasses === "yes" ? "wearing glasses" : "no glasses",
+  ].join(", ");
+  const taskPrompt = pikaTaskPromptLibrary[video.topic.id] || pikaTaskPromptLibrary.teeth;
+
+  return [
+    "Anime-inspired preschool cartoon, soft rounded shapes, gentle expressive child character, warm friendly colors, child-safe, calming mood.",
+    `Character: ${characterNotes}.`,
+    taskPrompt,
+    "The child starts upset and refusing, then slowly relaxes, tries one tiny step, and ends calmer.",
+    "Movement must be very slow and readable for a distressed preschool child.",
+    "No text on screen, no logos, no watermark, no scary faces, no fast camera movement, no hard cuts, 10-second loop.",
+  ].join(" ");
+}
+
+function renderPikaFileList() {
+  if (!pikaFileListEl) {
+    return;
+  }
+
+  pikaFileListEl.replaceChildren(
+    ...Object.entries(preRenderedVideoLibrary).map(([topicId, asset]) => {
+      const item = document.createElement("li");
+      item.textContent = `${topicId}: ${asset.src.replace("./", "")}`;
+      return item;
+    }),
+  );
+}
+
+function updatePikaPanel(video, status = "checking") {
+  if (!pikaFilenameEl || !pikaStatusEl || !pikaPromptTextEl) {
+    return;
+  }
+
+  const labels = getPikaStatusLabels(video.lang);
+  const filename = getPikaFilename(video.topic.id);
+
+  pikaFilenameEl.textContent = filename;
+  pikaFolderEl.textContent = "assets/videos/pika/";
+  pikaPromptTextEl.textContent = buildPikaPrompt(video);
+  pikaStatusEl.className = `asset-status ${status}`;
+  pikaStatusEl.textContent = labels[status] || labels.checking;
+  copyPikaPromptButton.textContent = labels.copy;
+  renderPikaFileList();
+}
+
 async function syncPreRenderedVideo(video) {
   const asset = preRenderedVideoLibrary[video.topic.id];
 
+  updatePikaPanel(video, "checking");
   stageEl.classList.remove("has-prerendered-video");
   prerenderedVideoEl.hidden = true;
   prerenderedVideoEl.pause();
@@ -1841,6 +1943,7 @@ async function syncPreRenderedVideo(video) {
   prerenderedVideoEl.load();
 
   if (!asset) {
+    updatePikaPanel(video, "missing");
     return;
   }
 
@@ -1848,6 +1951,7 @@ async function syncPreRenderedVideo(video) {
     const response = await fetch(asset.src, { method: "HEAD", cache: "no-store" });
 
     if (!response.ok) {
+      updatePikaPanel(video, "missing");
       return;
     }
 
@@ -1856,9 +1960,11 @@ async function syncPreRenderedVideo(video) {
     prerenderedVideoEl.hidden = false;
     stageEl.classList.add("has-prerendered-video");
     prerenderedVideoEl.load();
+    updatePikaPanel(video, "ready");
   } catch {
     stageEl.classList.remove("has-prerendered-video");
     prerenderedVideoEl.hidden = true;
+    updatePikaPanel(video, "missing");
   }
 }
 
@@ -2154,6 +2260,21 @@ copyButton.addEventListener("click", async () => {
     }, 1200);
   } catch {
     copyButton.textContent = "Select script to copy";
+  }
+});
+
+copyPikaPromptButton.addEventListener("click", async () => {
+  const text = pikaPromptTextEl.textContent;
+  const labels = getPikaStatusLabels();
+
+  try {
+    await navigator.clipboard.writeText(text);
+    copyPikaPromptButton.textContent = labels.copied;
+    window.setTimeout(() => {
+      copyPikaPromptButton.textContent = labels.copy;
+    }, 1200);
+  } catch {
+    copyPikaPromptButton.textContent = "Select prompt to copy";
   }
 });
 

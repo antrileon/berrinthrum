@@ -2086,7 +2086,8 @@ summary:focus-visible {
 }
 
 .info-panel,
-.script-output {
+.script-output,
+.asset-output {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel);
@@ -2123,16 +2124,19 @@ summary:focus-visible {
   border-color: #9bd2bd;
 }
 
-.script-output {
+.script-output,
+.asset-output {
   padding: 14px;
 }
 
-.script-output summary {
+.script-output summary,
+.asset-output summary {
   cursor: pointer;
   font-weight: 850;
 }
 
-.script-output pre {
+.script-output pre,
+.prompt-text {
   overflow: auto;
   max-height: 260px;
   margin: 12px 0;
@@ -2142,6 +2146,58 @@ summary:focus-visible {
   color: #e7eef7;
   line-height: 1.5;
   white-space: pre-wrap;
+}
+
+.asset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.asset-grid h3 {
+  overflow-wrap: anywhere;
+}
+
+.asset-status {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  margin: 8px 0 0;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.asset-status.ready {
+  border-color: #9bd2bd;
+  background: var(--mint);
+  color: #1f624d;
+}
+
+.asset-status.missing {
+  border-color: #efc0b5;
+  background: #fff1ee;
+  color: #8a3a2a;
+}
+
+.asset-status.checking {
+  border-color: #b8d2ee;
+  background: var(--blue-soft);
+  color: #21476e;
+}
+
+.asset-file-list {
+  display: grid;
+  gap: 5px;
+  margin: 12px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.78rem;
+  line-height: 1.35;
 }
 
 .copy-button {
@@ -3180,7 +3236,8 @@ summary:focus-visible {
   .composer-panel,
   .sketch-panel,
   .tone-group,
-  .coaching-grid {
+  .coaching-grid,
+  .asset-grid {
     grid-template-columns: 1fr;
   }
 
